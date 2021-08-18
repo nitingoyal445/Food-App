@@ -52,6 +52,12 @@ async function createPaymentSession(req, res){
     }
 }
 
+
+async function checkoutComplete(req, res){
+  console.log("Checkout Complete ran !!");
+}
+
+
 async function createNewBooking(req,res){
   //booking collection => 
   //if (user.bookedPlanId){
@@ -68,3 +74,4 @@ async function createNewBooking(req,res){
 }
 
 module.exports.createPaymentSession = createPaymentSession;
+module.exports.checkoutComplete = checkoutComplete;

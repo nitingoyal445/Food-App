@@ -12,7 +12,7 @@ app.use(cookieParser());
 //It trackes incoming request and see if there is datat in the request => the data will be fed in req.body
 app.use(express.json());
 
-app.use( express.static("public"));
+app.use( express.static(__dirname+"/public"));
 
 // app.httpMethod( appRoute, cb function( request, response))
 
