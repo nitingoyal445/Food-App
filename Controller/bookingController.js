@@ -19,6 +19,7 @@ async function createPaymentSession(req, res){
               ],
             //   customer:user.name,
               customer_email:user.email,
+              client_reference_id: planId,
               line_items: [
                 {
                     price_data:{
@@ -54,6 +55,7 @@ async function createPaymentSession(req, res){
 
 
 async function checkoutComplete(req, res){
+  try{
 
     const END_POINT_KEY = process.env.END_POINT_KEY;
   
@@ -62,28 +64,42 @@ async function checkoutComplete(req, res){
     // console.log(req);
     const stripeSignature = req.headers['stripe-signature'];
     
-    let event;
-    try {
-      event = stripeObj.webhooks.constructEvent(req.body, stripeSignature, END_POINT_KEY);
-    }
-    catch (err) {
-      res.status(400).send(`Webhook Error: ${err.message}`);
-    }
+    // let event;
+    // try {
+    //   event = stripeObj.webhooks.constructEvent(req.body, stripeSignature, END_POINT_KEY);
+    // }
+    // catch (err) {
+    //   res.status(400).send(`Webhook Error: ${err.message}`);
+    // }
 
-    console.log("event object !!");
-    console.log(event);
+    // console.log("event object !!");
+    // console.log(event);
     // if(event.type == "checkout.session.completed"){
     //   console.log(event);
     // }
     // else{
 
     // }
-
+    // if(req.body.data.type == "checkout.session.completed"){
+      const userEmail = req.body.data.object.customer_email;
+      const planId = req.body.data.object.client_reference_id;
+      await createNewBooking(userEmail, planId);
+    // }
+  }
+  catch(error){
+    res.json({
+      error
+    })
+  }
   
 }
 
 
-async function createNewBooking(req,res){
+async function createNewBooking(userEmail, planId){
+  console.log("Inside create booking !!!");
+  console.log(userEmail);
+  console.log(planId);
+  
   //booking collection => 
   //if (user.bookedPlanId){
       //  get booking id => go to booking document, push in bookedPlans
