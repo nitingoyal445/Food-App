@@ -64,13 +64,13 @@ async function checkoutComplete(req, res){
     
     let event;
     try {
-      event = stripe.webhooks.constructEvent(req.body, stripeSignature, END_POINT_KEY);
+      event = stripeObj.webhooks.constructEvent(req.body, stripeSignature, END_POINT_KEY);
     }
     catch (err) {
       res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
-    Console.log("event object !!");
+    console.log("event object !!");
     console.log(event);
     // if(event.type == "checkout.session.completed"){
     //   console.log(event);
