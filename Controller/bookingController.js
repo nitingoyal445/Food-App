@@ -1,3 +1,5 @@
+const { request } = require("express");
+const { ConsoleMessage } = require("puppeteer");
 const stripe = require("stripe");
 const bookingModel = require("../Model/bookingModel");
 const planModel = require("../Model/plansModel");
@@ -54,9 +56,32 @@ async function createPaymentSession(req, res){
 
 
 async function checkoutComplete(req, res){
-  console.log("Checkout Complete ran !!");
-  console.log("Request object");
-  console.log(req);
+
+    const END_POINT_KEY = process.env.END_POINT_KEY;
+  
+    // console.log("Checkout Complete ran !!");
+    // console.log("Request object");
+    // console.log(req);
+    const stripeSignature = req.headers['stripe-signature'];
+    
+    let event;
+    try {
+      event = stripe.webhooks.constructEvent(req.body, stripeSignature, END_POINT_KEY);
+    }
+    catch (err) {
+      response.status(400).send(`Webhook Error: ${err.message}`);
+    }
+
+    Console.log("event object !!");
+    console.log(event);
+    // if(event.type == "checkout.session.completed"){
+    //   console.log(event);
+    // }
+    // else{
+
+    // }
+
+  
 }
 
 
