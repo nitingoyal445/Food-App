@@ -96,11 +96,8 @@ async function checkoutComplete(req, res){
 
 
 async function createNewBooking(userEmail, planId){
-  console.log("Inside create booking !!!");
-  console.log(userEmail);
-  console.log(planId);
   
-  //booking collection => 
+    //booking collection => 
   //if (user.bookedPlanId){
       //  get booking id => go to booking document, push in bookedPlans
   //}
@@ -109,8 +106,37 @@ async function createNewBooking(userEmail, planId){
     //id => user.bookedPlanId
     //booking document.bookedPlans.push(obj); 
   //}
-  
+  try{
+    const user = await userModel.findOne({email: userEmail});
+    const plan = await planModel.findById(planId);
 
+    const userId = user["_id"];
+
+    if(user.bookedPlanId== undefined){
+      const bookingOrder = {
+        userId: userId,
+        bookedPlans : [{planId: planId, name:plan.name, currentPrice : plan.price }]
+      }
+      const newBookingOrder = await bookingModel.create(bookingOrder);
+      user.bookedPlanId = newBookingOrder["_id"];
+      await user.save({validateBeforeSave: false});
+    }
+    else{
+      //already bough some plan
+      const newBookedPlan = {
+        planId : planId,
+        name : plan.name,
+        currentPrice: plan.price
+      }
+      const userBookingObject = await bookingModel.findById(user.bookedPlanId);
+      userBookingObject.bookedPlans.push(newBookedPlan);
+      await userBookingObject.save();
+    }
+  }
+  catch(error){
+    return error;
+  }
+  
 
 }
 
