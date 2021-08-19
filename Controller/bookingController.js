@@ -1,5 +1,3 @@
-const { request } = require("express");
-const { ConsoleMessage } = require("puppeteer");
 const stripe = require("stripe");
 const bookingModel = require("../Model/bookingModel");
 const planModel = require("../Model/plansModel");
