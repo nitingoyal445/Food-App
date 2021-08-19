@@ -300,6 +300,7 @@ input[type="checkbox"] {
   line-height: 200%;
   border-bottom: 1px solid rgb(134, 143, 161);
   margin: 1rem;
+  margin-left: 40px;
 }
 
 .signup-header {
@@ -313,7 +314,7 @@ input[type="checkbox"] {
   position: relative;
   /* top: 0.rem; */
   top: 1.5rem;
-  /* left: 5rem; */
+  left: 6rem;
 }
 .pricing {
   font-size: 300%;
