@@ -18,7 +18,7 @@ async function getHomePage(req, res){
 }
 
 async function getProfilePage(req, res){
-    res.render("profilePage.pug", {user : req.user});
+    res.render("profilePage.pug", {user : req.user, name: user.name});
 }
 
 function getResetPasswordPage(req, res){
